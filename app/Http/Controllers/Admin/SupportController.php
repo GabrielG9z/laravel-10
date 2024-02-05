@@ -25,8 +25,10 @@ class SupportController extends Controller
     {
         $data = $request->all();
         $data['status'] = 'a';
-
-        $support = $support->create($data);
-        dd($support);
+        //Criamos os dados na database
+        $support->create($data);
+        //Assim que criado redirecione para a view onde se encontra a exibição dos dados.
+        return redirect()->route('supports.index');
+        
     }
 }
