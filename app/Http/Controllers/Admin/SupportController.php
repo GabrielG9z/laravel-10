@@ -31,14 +31,15 @@ class SupportController extends Controller
     {
         return view('admin/supports/create');
     }
-
+//QUERO EDITAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
     public function edit(Support $support, string|int $id)
     {
         if(!$support = $support->where('id',$id)->first()) {
             return back();
         }
+        return view('admin/supports.edit', compact('support'));
     }
-
+//QUERO CRIAR E SALVAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
     public function store(Request $request, Support $support)
     {
         $data = $request->all();
@@ -48,5 +49,33 @@ class SupportController extends Controller
         //Assim que criado redirecione para a view onde se encontra a exibição dos dados.
         return redirect()->route('supports.index');
         
+    }
+//QUERO ATUALIZAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
+    public function update(Request $request,Support $support, string $id)
+    {
+        if(!$support = $support->find($id)) {
+            return back();
+        }   
+
+        //$support->subject = request->subject;
+        //support->body = request->body;
+        //support->save();
+
+        $support->update($request->only([
+            'subject', 'body'
+        ]));
+
+        return redirect()->route('supports.index');
+    }
+
+    //QUERO DESTRUIR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
+    public function destroy(string|int $id)
+    {
+        if(!$support = Support::find($id)) {
+            return back();
+        }   
+        $support->delete();
+    
+        return redirect()->route('supports.index');
     }
 }
