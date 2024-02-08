@@ -5,24 +5,34 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
+use App\Services\SupportService;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller
 {
-    public function index(Support $support)
+
+    public function __construct(
+        protected SupportService $service
+    ) {}
+
+
+    //Injetando dados que vem da request
+    public function index(Request $request)
     {
        // $support = new Support(); Essa impressão utiliza uma forma alternativa de utilizar a variável
-        $supports = $support->all();
+
+       //Aqui retornamos os dados trazidos da request, junto do parametro filter
+        $supports = $this->service->getAll($request->filter);
        // dd($supports); Este comando Dump and Die, debuga e informa os itens de um array, ignorando o código abaixo
         return view('admin/supports/index',compact('supports'));
     }
 
-    public function show(string|int $id)
+    public function show(string $id)
     {
         //Support::find($id)
         //Support::where('id', $id)->first();
         //Support::where('id', '!=', $id)->first();
-        if(!$support = Support::find($id)) {
+        if(!$support = $this->service->findOne($id)) {
             return back();
         }
         return view('admin/supports/show', compact('support'));
@@ -33,9 +43,9 @@ class SupportController extends Controller
         return view('admin/supports/create');
     }
 //QUERO EDITAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
-    public function edit(Support $support, string|int $id)
+    public function edit(Support $support, string $id)
     {
-        if(!$support = $support->where('id',$id)->first()) {
+        if(!$support = $this->service->findOne($id)) {
             return back();
         }
         return view('admin/supports.edit', compact('support'));
@@ -70,12 +80,9 @@ class SupportController extends Controller
     }
 
     //QUERO DESTRUIR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
-    public function destroy(string|int $id)
+    public function destroy(string $id)
     {
-        if(!$support = Support::find($id)) {
-            return back();
-        }   
-        $support->delete();
+        $this->service->delete($id);
     
         return redirect()->route('supports.index');
     }
