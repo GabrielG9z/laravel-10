@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
 use Illuminate\Http\Request;
 
@@ -40,9 +41,10 @@ class SupportController extends Controller
         return view('admin/supports.edit', compact('support'));
     }
 //QUERO CRIAR E SALVAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
-    public function store(Request $request, Support $support)
+    public function store(StoreUpdateSupport $request, Support $support)
     {
-        $data = $request->all();
+        //Adicionamos o validated para pegarmos apenas os dados que foram validados
+        $data = $request->validated();
         $data['status'] = 'a';
         //Criamos os dados na database
         $support->create($data);
@@ -51,7 +53,7 @@ class SupportController extends Controller
         
     }
 //QUERO ATUALIZAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
-    public function update(Request $request,Support $support, string $id)
+    public function update(StoreUpdateSupport $request,Support $support, string $id)
     {
         if(!$support = $support->find($id)) {
             return back();
@@ -61,9 +63,8 @@ class SupportController extends Controller
         //support->body = request->body;
         //support->save();
 
-        $support->update($request->only([
-            'subject', 'body'
-        ]));
+        //maneira mais prática de validar os dados processados 
+        $support->update($request->validated());
 
         return redirect()->route('supports.index');
     }
@@ -78,4 +79,5 @@ class SupportController extends Controller
     
         return redirect()->route('supports.index');
     }
+    
 }
