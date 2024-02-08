@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use app\DTO\CreateSupportDTO;
+use app\DTO\UpdateSupportDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
@@ -53,28 +55,20 @@ class SupportController extends Controller
 //QUERO CRIAR E SALVAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
     public function store(StoreUpdateSupport $request, Support $support)
     {
-        //Adicionamos o validated para pegarmos apenas os dados que foram validados
-        $data = $request->validated();
-        $data['status'] = 'a';
-        //Criamos os dados na database
-        $support->create($data);
-        //Assim que criado redirecione para a view onde se encontra a exibição dos dados.
+        $this->service->new(
+            CreateSupportDTO::makeFromRequest($request));
+
         return redirect()->route('supports.index');
-        
     }
 //QUERO ATUALIZAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
     public function update(StoreUpdateSupport $request,Support $support, string $id)
     {
+        $support = $this->service->update(
+            UpdateSupportDTO::makeFromRequest($request)
+        );
         if(!$support = $support->find($id)) {
             return back();
-        }   
-
-        //$support->subject = request->subject;
-        //support->body = request->body;
-        //support->save();
-
-        //maneira mais prática de validar os dados processados 
-        $support->update($request->validated());
+        }
 
         return redirect()->route('supports.index');
     }

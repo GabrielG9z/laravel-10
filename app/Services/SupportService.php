@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use app\DTO\CreateSupportDTO;
+use app\DTO\UpdateSupportDTO;
+use GuzzleHttp\Promise\Create;
 use stdClass;
 
 class SupportService 
@@ -25,32 +28,14 @@ class SupportService
 
 
     //Retorne uma classe genérica
-    public function new(
-        string $subject,
-        string $status,
-        string $body,
-    ): stdClass
+    public function new(CreateSupportDTO $dto): stdClass
     {
-        $this->repository->new( 
-            $subject,
-            $status, 
-            $body,
-        );
+        $this->repository->new($dto);
     }
 
-    public function update(
-        string $id,
-        string $subject,
-        string $status,
-        string $body,
-    ): stdClass|null 
+    public function update(UpdateSupportDTO $dto): stdClass|null 
     {
-        $this->repository->update( 
-            $id,
-            $subject,
-            $status, 
-            $body,
-        );
+        return $this->repository->update($dto);
     }
 
 
