@@ -18,6 +18,6 @@ class CreateSupportDTO
             $request->subject,
             'a',
             $request->body,
-        )
+        );
     }
 }

@@ -20,6 +20,6 @@ class UpdateSupportDTO
             $request->subject,
             'a',
             $request->body,
-        )
+        );
     }
 }
