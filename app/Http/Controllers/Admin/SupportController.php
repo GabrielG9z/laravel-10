@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use app\DTO\CreateSupportDTO;
-use app\DTO\UpdateSupportDTO;
+use App\DTO\{CreateSupportDTO, UpdateSupportDTO};
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupport;
 use App\Models\Support;
@@ -66,12 +65,18 @@ class SupportController extends Controller
         $support = $this->service->update(
             UpdateSupportDTO::makeFromRequest($request)
         );
-        if(!$support = $support->find($id)) {
+        if(!$support = $this->find($support->id)) {
             return back();
         }
 
         return redirect()->route('supports.index');
     }
+
+    public function find($id)
+    {
+        return Support::find($id);
+    }
+
 
     //QUERO DESTRUIR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
     public function destroy(string $id)
