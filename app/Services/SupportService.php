@@ -17,6 +17,20 @@ class SupportService
         $this->repository = $repository;
     }
 
+
+    public function paginate(int $page = 1, 
+                            int $totalPerPage = 15,
+                            string $filter = null)
+    {
+        // Retorna o valor obtido do método getAll() do repositório
+        return $this->repository->paginate(
+            page: $page,
+            totalPerPage: $totalPerPage,
+            filter: $filter,
+        );
+    }
+
+
     public function getAll(string $filter = null): array
     {
         // Retorna o valor obtido do método getAll() do repositório
