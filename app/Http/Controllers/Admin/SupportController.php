@@ -25,19 +25,15 @@ class SupportController extends Controller
        //Aqui retornamos os dados trazidos da request, junto do parametro filter
         $supports = $this->service->paginate(
             page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 15),
+            totalPerPage: $request->get('per_page', 1),
             filter: $request->filter,  
 
         );
 
-
-
-
-       // $supports = Support::paginate();
-        
+        $filters = ['filter' => $request->get('filter', '')];
 
        // dd($supports); Este comando Dump and Die, debuga e informa os itens de um array, ignorando o código abaixo
-        return view('admin/supports/index',compact('supports'));
+        return view('admin/supports/index',compact('supports', 'filters'));
     }
 
     public function show(string $id)

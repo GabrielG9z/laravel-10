@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\{CreateSupportDTO, UpdateSupportDTO};
+use App\Repositories\PaginationInterface;
 use App\Repositories\SupportRepositoryInterface;
 use GuzzleHttp\Promise\Create;
 use \stdClass;
@@ -20,9 +21,7 @@ class SupportService
 
     public function paginate(int $page = 1, 
                             int $totalPerPage = 15,
-                            string $filter = null)
-    {
-        // Retorna o valor obtido do método getAll() do repositório
+                            string $filter = null): PaginationInterface {
         return $this->repository->paginate(
             page: $page,
             totalPerPage: $totalPerPage,
