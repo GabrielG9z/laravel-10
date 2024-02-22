@@ -35,14 +35,15 @@ class StoreUpdateSupport extends FormRequest
             ]
         ];
 
-        if($this->method() === 'PUT') {
+        if($this->method() === 'PUT' || $this->method() === 'PATCH') {
+           // $id = $this->support ?? $this->id; Método alternativo
             $rules['subject'] = [
                 'required',
                 'min:3',
                 'max:255',
                 //Quando eu for tentar editar o próprio assunto e for o mesmo permita, mas se eu for colocar o mesmo assunto em outro tópico não aceite
                 //"unique:supports,subject,{$this->id},id",
-                Rule::unique('supports')->ignore($this->id),
+                Rule::unique('supports')->ignore($this->support ?? $this->id),
             ];
         }
         return $rules;

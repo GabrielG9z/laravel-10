@@ -1,9 +1,9 @@
 <?php
 
 use App\Enums\SupportStatus;
+ 
+use App\Http\Controllers\Admin\{SupportController};
 use App\Http\Controllers\Site\SiteController;
-use App\Http\Controllers\Admin\SupportController;
-use App\Models\Support;
 use Illuminate\Support\Facades\Route; 
 
 //                               <--Rotas de direcionamento de views, com requisições & funções CRUD-->>
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('supports/create', [SupportController::class, 'create'])->name('supports.create');
 
 Route::get('/test', function() {
-    dd(array_column(SupportStatus::cases(), 'name'));
+    //dd(array_column(SupportStatus::cases(), 'name'));
 });
 Route::put('/supports/{id}', [SupportController::class, 'update'])->name('supports.update');
 Route::delete('/supports/{id}', [SupportController::class, 'destroy'])->name('supports.destroy');
