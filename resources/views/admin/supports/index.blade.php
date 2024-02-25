@@ -3,8 +3,8 @@
 @section('title', 'Fórum')
 
 @section('header')
-<h1>Listagem dos suportes</h1>
-
+@include('admin.supports.partials.header', ['total' =>$supports->total()])
+@endsection
 @section('content')
 
 
