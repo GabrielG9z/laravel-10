@@ -24,8 +24,8 @@ class SupportController extends Controller
 
        //Aqui retornamos os dados trazidos da request, junto do parametro filter
         $supports = $this->service->paginate(
-            page: $request->get('page', 1),
-            totalPerPage: $request->get('per_page', 1),
+            page: $request->get('page', 3),
+            totalPerPage: $request->get('per_page', 3),
             filter: $request->filter,  
 
         );
@@ -65,7 +65,8 @@ class SupportController extends Controller
         $this->service->new(
             CreateSupportDTO::makeFromRequest($request));
 
-        return redirect()->route('supports.index');
+        return redirect()->route('supports.index')
+        ->with('message', 'Cadastrado com sucesso!');
     }
 //QUERO ATUALIZAR UMA STRING OU UM INTEIRO, PASSO O TIPO DESTE ITEM, E ADICIONO O VALOR DO $ID DO ITEM.
     public function update(StoreUpdateSupport $request,Support $support, string $id)
@@ -77,7 +78,8 @@ class SupportController extends Controller
             return back();
         }
 
-        return redirect()->route('supports.index');
+        return redirect()->route('supports.index')
+                        ->with('message', 'Atualizado com sucesso!');
     }
 
     public function find($id)
@@ -91,7 +93,8 @@ class SupportController extends Controller
     {
         $this->service->delete($id);
     
-        return redirect()->route('supports.index');
+        return redirect()->route('supports.index')
+                        ->with('message','Deletado com sucesso!');
     }
     
 }
