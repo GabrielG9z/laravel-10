@@ -10,9 +10,9 @@
 </head>
 <body>
     <section class="container px-4 mx-auto">
-        <head>
-            @yield('header')
-        </head>
+        
+        @yield('header')
+        
         <div class="content">
             @yield('content')
         </div>
